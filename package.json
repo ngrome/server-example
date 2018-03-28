@@ -1,0 +1,66 @@
+{
+  "name": "ts",
+  "version": "1.0.1",
+  "description": "A Simple tutorial code for TypeScript+NodeJS+JEST",
+  "main": "index.js",
+  "engines": {
+    "node": "9.3.0",
+    "npm": "5.7.1"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/ts-node ./src/index.ts",
+    "start:dev": "nodemon -V -w . --ext \".ts\" --ignore \".spec.ts\" --exec \"npm run start\"",
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "clean": "rm -rf build",
+    "test": "jest",
+    "tslint": "tslint -c tslint.json 'src/**/*.ts'",
+    "commit": "git-cz"
+  },
+  "keywords": [
+    "TypeScript",
+    "NodeJS",
+    "Jest",
+    "Meetup"
+  ],
+  "author": "Lorenzo Franceschini <lordkenzo@outlook.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/jest": "^22.1.4",
+    "@types/jsonwebtoken": "^7.2.5",
+    "@types/mongoose": "^5.0.5",
+    "@types/morgan": "^1.7.35",
+    "babel-jest": "^22.4.1",
+    "babel-preset-env": "^1.6.1",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
+    "jest": "^22.4.2",
+    "mongoose": "^5.0.8",
+    "nodemon": "^1.17.1",
+    "ts-jest": "^22.4.1",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "tslint-config-airbnb": "^5.7.0",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-validator": "^5.0.3",
+    "jsonwebtoken": "^8.2.0",
+    "moment": "^2.21.0",
+    "morgan": "^1.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/LordKenzo/ts-node-2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

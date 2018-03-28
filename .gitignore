@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+keys.txt
+/src/trash
+*.zip
+*.rar
+*.tar.gz

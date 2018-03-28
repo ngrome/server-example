@@ -1,0 +1,10 @@
+{
+    "extends": "tslint-config-airbnb",
+    "rules": {
+        "variable-name": [false],
+        "function-name": [false],
+        "max-line-length": [true, {
+            "ignore": ["comments"]
+          }]
+    }
+}

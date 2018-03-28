@@ -5,12 +5,14 @@ let dbURI: string;
 
 switch (process.env.NODE_ENV || config.server.ENV) {
   case 'web':
+    console.log('WEB');
     dbURI = config.mongodb.mongoURI.web;
     break;
   case 'production':
     dbURI = config.mongodb.mongoURI.prod;
     break;
   default:
+    console.log('DEFAULT');
     dbURI = config.mongodb.mongoURI.web;
 }
 console.log('dbURI:', dbURI);

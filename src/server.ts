@@ -46,6 +46,6 @@ export default function server() {
     res.status(404).json({ message:'NOT FOUND' });
   });
   app.listen(process.env.PORT || config.server.PORT, () => {
-    console.log('Server is Up!');
+    console.log('Server is Up on ' + process.env.NODE_ENV || config.server.ENV);
   });
 }

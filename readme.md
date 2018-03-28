@@ -49,6 +49,10 @@ npm run test security
 
 * Creare un account su Heroku
 * Installare Heroku CLI: `brew install heroku`
+* Fai il login su Heroku con: `heroku login`
+* Crea il progetto Heroku con: `heroku create`
+* Fai il push: `git push heroku master`
+* Imposta le Variabili di Ambiente per MLAB (heroku config:get MONGODB_URI)
 * Porta dinamica di Heroku: process.env.PORT || 3000
 * Specificare la versione di NodeJS
 * Specificare lo script di avvio

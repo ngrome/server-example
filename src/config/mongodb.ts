@@ -5,7 +5,7 @@ let dbURI: string;
 
 switch (process.env.NODE_ENV || config.server.ENV) {
   case 'test':
-    dbURI = config.mongodb.mongoURI.test;
+    dbURI = config.mongodb.mongoURI.web;
     break;
   case 'production':
     dbURI = config.mongodb.mongoURI.prod;

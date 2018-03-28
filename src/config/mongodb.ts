@@ -11,9 +11,9 @@ switch (process.env.NODE_ENV || config.server.ENV) {
     dbURI = config.mongodb.mongoURI.prod;
     break;
   default:
-    dbURI = config.mongodb.mongoURI.dev;
+    dbURI = config.mongodb.mongoURI.web;
 }
-
+console.log('dbURI:', dbURI);
 export const initdb = (callback: (db:Promise<void>) => void) => {
   const db: Promise<void> = mongoose.connect(dbURI).then(() => {
     console.log('MongoDB è connesso');

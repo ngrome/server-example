@@ -30,7 +30,7 @@ export const initdb = (callback: (db:Promise<void>) => void) => {
 
   mongoose.connection.on('error', (err) => {
     if (err.message.indexOf('ECONNREFUSED') !== -1) {
-      console.error('Error: The server was not able to reach MongoDB.\nMaybe it\'s not running?');
+      console.error('Error: The server was not able to reach MongoDB.\nMaybe it\'s not running?', err);
       process.exit(1);
     } else {
       throw err;

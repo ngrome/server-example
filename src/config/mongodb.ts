@@ -4,7 +4,7 @@ import { config } from './';
 let dbURI: string;
 
 switch (process.env.NODE_ENV || config.server.ENV) {
-  case 'test':
+  case 'web':
     dbURI = config.mongodb.mongoURI.web;
     break;
   case 'production':

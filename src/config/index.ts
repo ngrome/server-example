@@ -10,7 +10,7 @@ export const config = {
   mongodb: {
     mongoURI: {
       dev: 'mongodb://localhost/ts-node-meetup',
-      web: process.env.MONGODB_URI || 'mongodb://localhost/ts-node-meetup',
+      web: (process.env.MONGODB_URI || 'mongodb://localhost/ts-node-meetup'),
       prod: 'mongodb://localhost/ts-node-meetup',
     },
   },

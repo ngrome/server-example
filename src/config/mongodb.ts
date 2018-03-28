@@ -14,9 +14,13 @@ export const initdb = (callback: (db:Promise<void>) => void) => {
     case 'production':
       dbURI = config.mongodb.mongoURI.prod;
       break;
+    case 'development':
+      console.log('DEV');
+      dbURI = config.mongodb.mongoURI.dev;
+      break;
     default:
       console.log('DEFAULT');
-      dbURI = config.mongodb.mongoURI.web;
+      dbURI = config.mongodb.mongoURI.dev;
   }
   const db: Promise<void> = mongoose.connect(dbURI).then(() => {
     console.log('MongoDB è connesso');

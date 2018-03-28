@@ -44,6 +44,8 @@ dbCodeBattleSchema.schemaUser.pre('save', function (this: any, next) {
 });
 
 dbCodeBattleSchema.schemaUser.pre('update', function (this: any, next) {
+  console.log('UPDATE PRE');
+  console.log(this);
   if (!this.isModified('password')) {
     return next();
   }

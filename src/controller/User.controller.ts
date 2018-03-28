@@ -1,5 +1,5 @@
 import { Request as Req, Response as Res, NextFunction } from 'express';
-import { Req as Request, Res as Response, Next, Param } from '../lib/decorators/parameters';
+import { Req as Request, Res as Response, Next, Param, Body } from '../lib/decorators/parameters';
 
 import { checkEmail, checkPassword } from '../middleware/checkRequest';
 import { isAdmin, VerifyJWTToken } from '../middleware/JWT';
@@ -46,17 +46,37 @@ export class UserController {
         await this.userService.findDocument<User>();
       res.status(200).json(users);
     } catch (err) {
-      res.status(400).json({ success: false,  message:'Impossibile cercare attori', errors: err });
+      res.status(400).json({ success: false,  message:'Impossibile cercare utnte', errors: err });
     }
   }
 
   @Delete('/:id')
   async deleteUser(@Request() req: Req, @Response() res:Res, @Param('id') id: string) {
-    console.log(id);
+    try {
+      const op = await this.userService.removeDocument<User>(id).then((result) => {
+        res.status(200).json({ success: true, message: 'Utente cancellato' });
+      }).catch((err) => {
+        res.status(404).json({ success: false, message: 'Utente non trovato' });
+      });
+    } catch (err) {
+      res.status(400).json({ success: false,  message:'Impossibile cancellare utente', errors: err });
+    }
   }
 
   @Put('/:id')
-  async updateUser(@Request() req: Req, @Response() res:Res, @Param('id') id: string) {
-    console.log(id);
+  async updateUser(@Request() req: Req, @Response() res:Res, @Param('id') id: string, @Body('user') user: User) {
+    try {
+      const updateData = {
+        ...user,
+        id};
+      const op = await this.userService.updateDocument<User>(updateData).then((result) => {
+        res.status(200).json({ success: true, message: 'Utente aggiornato' });
+      }).catch((err) => {
+        console.log(err);
+        res.status(404).json({ success: false, message: 'Utente non trovato' });
+      });
+    } catch (err) {
+      res.status(400).json({ success: false,  message:'Impossibile aggiornare utente', errors: err });
+    }
   }
 }

@@ -34,20 +34,31 @@ export class Service{
 
   updateDocument<T>(updatedData: any, model: mongoose.Model<any>) : Promise<T | null> {
     const promise = new Promise<T | null>((resolve, reject) => {
-      this.findDocument({ _id: updatedData.id }, 1, model).then((result) => {
-        const documentUpdated = updatedData;
-        documentUpdated.save((err: any, res: any) => {
-          if (err) { reject(err.message); }
-          else { resolve(res); }
-        });
+      model.findOneAndUpdate({ _id: updatedData.id }, updatedData, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
       });
     });
     return promise;
   }
 
-  removeDocument<T>(id: string, model: mongoose.Model<any>): Promise<T | null> {
-    return new Promise<T | null>((resolve, reject) => {
-      // TO-DO
+  removeDocument<T>(id: string, model: mongoose.Model<any>): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      model.findOneAndRemove({ _id: id }).exec((err, item) => {
+        if (err) {
+          throw err;
+        }
+        if (!item) {
+          console.log('utente non trovato');
+          reject(false);
+        } else {
+          console.log('utente trovato');
+          resolve(true);
+        }
+      });
     });
   }
 }

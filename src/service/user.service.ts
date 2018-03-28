@@ -34,6 +34,10 @@ export class UserService extends Service {
     return super.updateDocument<User | null>(updatedUser, userModel);
   }
 
+  removeDocument<User>(idUser: string) : Promise<boolean> {
+    return super.removeDocument(idUser, userModel);
+  }
+
   comparePassword(password: string, candidatePassword: string): Promise<boolean> {
     return new Promise((resolve: any, reject: any) => {
       console.log(password, candidatePassword);

@@ -10,7 +10,6 @@ function methodDecoratorFactory(
       url,
       middleware,
       endMiddleware };
-    console.log(meta);
     return descriptor;
   };
 }
@@ -33,7 +32,6 @@ export function Delete(url: string, middleware?: Type[], endMiddleware?: Type[])
 
 export function Secured(authorizedGroup: Ruoli[]): MethodDecorator {
   return (target: any, key, descriptor) => {
-    console.log('SERCURED DECORATOR Invocato');
     const meta: ExpressMeta = getMeta(target);
     meta.routes[key] = {
       ...meta.routes[key],

@@ -40,9 +40,7 @@ export class UserService extends Service {
 
   comparePassword(password: string, candidatePassword: string): Promise<boolean> {
     return new Promise((resolve: any, reject: any) => {
-      console.log(password, candidatePassword);
       bcrypt.compare(candidatePassword, password, (err, success) => {
-        console.log(err, success);
         if (err) return reject(err);
         return resolve(success);
       });

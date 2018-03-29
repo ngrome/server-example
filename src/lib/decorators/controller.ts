@@ -5,5 +5,6 @@ export function Controller(basePath: string, middleware?: Type[]): ClassDecorato
     const meta: ExpressMeta = getMeta(target.prototype);
     meta.url = basePath;
     meta.middleware = middleware || [];
+    console.log('META', JSON.stringify(meta, null, 4));
   };
 }

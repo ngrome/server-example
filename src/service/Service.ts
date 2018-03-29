@@ -5,7 +5,7 @@ export class Service{
   findDocument<T>(
     query: {} = {}, maxRows: number = 0, model: mongoose.Model<any>) : Promise<T[]> {
     const promise = new Promise<T[]>((resolve, reject) => {
-      console.log(query);
+      console.log('Query @findDocument', query);
       model.find(query).sort({ createdAt: -1 }).limit(maxRows).exec((err: any, res: any) => {
 
         if (err) { reject(err); }

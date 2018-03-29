@@ -3,15 +3,6 @@ import { Type, ExpressClass, ExpressMeta, getMeta, Route } from './metaDati';
 import { extractParameters } from './decorators/parameters';
 import { authorizationHandler, middlewareHandler } from './handlers';
 import { NextFunction } from 'express-serve-static-core';
-declare global {
-  namespace express {
-    interface IRouterMatcher{
-      'asd': 1;
-      [key:string]: any;
-    }
-  }
-}
-
 
 export function useController(app: Application | Router, controllers: Type[]) {
   controllers.map((controller: Type) => registerControllerRoutes(app, controller));
@@ -54,11 +45,20 @@ function registerControllerRoutes(app: Application | Router, controllerToRegiste
       return handler;
     };
 
-    const routeAuth = authorizationHandler(route.authorizedGroup);
+    /*
+    Costruisco l'handler delle autorizzazioni
+    */
+    const routeAuth = route.authorizedGroup ? authorizationHandler(route.authorizedGroup) : null;
 
+    /*
+    Costruisco l'handler dei middleware da eseguire prima dell'handler
+    */
     const routeMiddleware: RequestHandler[] = (route.middleware || [])
       .map(middleware => middlewareHandler(middleware));
 
+    /*
+    Costruisco l'handler dei middleware da eseguire dopo l'handler che dovrà avviarli con next
+    */
     const endMiddleware: RequestHandler[] = (route.endMiddleware || [])
       .map(middleware => middlewareHandler(middleware));
 
@@ -66,19 +66,28 @@ function registerControllerRoutes(app: Application | Router, controllerToRegiste
     router di Express: router.get(...)
     Al metodo, per la url, applico i vari Middleware, Auth, Handler e EndMiddleware
     */
-    const metodo: string = route.method;
-    router[metodo].apply(router, [
-      route.url, routeMiddleware, routeAuth, routeHandler, endMiddleware]);
+    // const applyToRouter2 = [route.url, routeMiddleware, routeAuth, routeHandler, endMiddleware];
+    const applyToRouter: any = [
+      route.url];
+    if (routeMiddleware.length > 0) {
+      applyToRouter.push(routeMiddleware);
+    }
+    if (routeAuth) {
+      applyToRouter.push(routeAuth);
+    }
+    if (routeHandler) {
+      applyToRouter.push(routeHandler);
+    }
+    if (endMiddleware.length > 0) {
+      applyToRouter.push(endMiddleware);
+    }
+    router[route.method].apply(router, applyToRouter);
 
   }
-
   app.use(url, router);
-
 }
 
-
-
 function getController(Controller: Type): ExpressClass {
-  // Prendilo da un Container o istanzialo
+  // To-DO: Prendilo da un Container o istanzialo
   return new Controller();
 }

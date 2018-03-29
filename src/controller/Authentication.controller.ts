@@ -31,7 +31,6 @@ export class AuthenticationController {
           if (success === false) {
             throw 'Errore di login:' + success;
           }
-          console.log('SUCCESS PSW', success);
         }
 
         req.user = user;

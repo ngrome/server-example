@@ -3,6 +3,15 @@ import { Type, ExpressClass, ExpressMeta, getMeta, Route } from './metaDati';
 import { extractParameters } from './decorators/parameters';
 import { authorizationHandler, middlewareHandler } from './handlers';
 import { NextFunction } from 'express-serve-static-core';
+declare global {
+  namespace express {
+    interface IRouterMatcher{
+      'asd': 1;
+      [key:string]: any;
+    }
+  }
+}
+
 
 export function useController(app: Application | Router, controllers: Type[]) {
   controllers.map((controller: Type) => registerControllerRoutes(app, controller));
@@ -11,7 +20,9 @@ export function useController(app: Application | Router, controllers: Type[]) {
 function registerControllerRoutes(app: Application | Router, controllerToRegister: Type) {
   const controller: ExpressClass = getController(controllerToRegister);
   const meta: ExpressMeta = getMeta(controller);
-  const router = express.Router();
+  const router : Router & {
+    [key: string]: any;
+  } = express.Router();
   const routes = meta.routes;
   const url = meta.url;
   const params = meta.params;
@@ -58,6 +69,7 @@ function registerControllerRoutes(app: Application | Router, controllerToRegiste
     const metodo: string = route.method;
     router[metodo].apply(router, [
       route.url, routeMiddleware, routeAuth, routeHandler, endMiddleware]);
+
   }
 
   app.use(url, router);

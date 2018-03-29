@@ -62,6 +62,7 @@ export class isAdmin implements Middleware {
 export class GenerateToken implements Middleware{
 
   public use(req: Req, res: Res,next: NextFunction): void {
+    console.log('GENERATE TOKEN');
     req.user = req.user || {};
     const user = {
       mail: req.user.mail,

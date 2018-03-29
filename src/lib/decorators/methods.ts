@@ -10,12 +10,13 @@ function methodDecoratorFactory(
       url,
       middleware,
       endMiddleware };
+    console.log(meta);
     return descriptor;
   };
 }
 
-export function Post(url: string, middleware?: Type[]) {
-  return methodDecoratorFactory('post', url, middleware || [], []);
+export function Post(url: string, middleware?: Type[], endMiddleware?: Type[]) {
+  return methodDecoratorFactory('post', url, middleware || [], endMiddleware || []);
 }
 
 export function Get(url: string, middleware?: Type[], endMiddleware?: Type[]) {

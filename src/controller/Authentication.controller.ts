@@ -6,23 +6,23 @@ import { Req as Request, Res as Response, Next } from '../lib/decorators/paramet
 import { checkPassword, checkUsername, checkToken } from '../middleware/checkRequest';
 import jsonwebtoken from 'jsonwebtoken';
 import { config } from '../config';
-import { VerifyJWTToken, GetBodyToken } from '../middleware/JWT';
+import { VerifyJWTToken, GetBodyToken, GenerateToken, SendToken } from '../middleware/JWT';
 import { UserService } from '../service/user.service';
 
 @Controller('')
-export class SecurityController {
+export class AuthenticationController {
 
   constructor(private userService: UserService) {
     this.userService = new UserService();
   }
 
-  @Post('/login')
+  @Post('/login', [], [GenerateToken, SendToken])
   async login(@Request() req: Req, @Response() res: Res, @Next() next: any) {
     try {
       const user : User = await this.userService
-      .findDocument<User>({ username: req.body.username }, 1)
-      .then(users => users[0]);
-      console.log(user);
+        .findDocument<User>({ username: req.body.username }, 1)
+        .then(users => users[0]);
+      console.log(`Try to logged in: ${user.username}`);
       if (user === null) {
         throw 'Utente non trovato';
       } else {
@@ -31,7 +31,9 @@ export class SecurityController {
           if (success === false) {
             throw 'Errore di login:' + success;
           }
+          console.log('SUCCESS PSW', success);
         }
+
         req.user = user;
         next();
       }

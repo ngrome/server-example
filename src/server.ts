@@ -43,9 +43,9 @@ export default function server() {
   app.use(config.server.API, routes(app));
   app.use(apiError);
   app.use((req, res, next) => {
-    res.status(404).json({ message:'NOT FOUND' });
+    res.status(404).json({ message:'API RICHIESTA NON TROVATA!' });
   });
-  app.listen(process.env.PORT || config.server.PORT, () => {
-    console.log('Server is Up on PORT' + process.env.PORT + ' ENV: ' + (process.env.NODE_ENV || config.server.ENV));
+  app.listen((process.env.PORT || config.server.PORT), () => {
+    console.log(`Server is Up on ${(process.env.PORT || config.server.PORT)} ENV: ${(process.env.NODE_ENV || config.server.ENV)}`);
   });
 }

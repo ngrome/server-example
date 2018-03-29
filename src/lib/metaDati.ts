@@ -41,7 +41,6 @@ export function getMeta(target: ExpressClass): ExpressMeta {
   return target.__express_meta__;
 }
 
-
 export interface ParameterConfiguration {
   index: number;
   type: ParameterType;
@@ -57,7 +56,6 @@ export interface Route {
   endMiddleware: Type[];
   [key: string]: any;
 }
-
 
 export interface Type extends Function {
   new (...args: any[]): any;

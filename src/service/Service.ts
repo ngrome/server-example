@@ -34,11 +34,14 @@ export class Service{
 
   updateDocument<T>(updatedData: any, model: mongoose.Model<any>) : Promise<T | null> {
     const promise = new Promise<T | null>((resolve, reject) => {
-      model.findOneAndUpdate({ _id: updatedData.id }, updatedData, (err, doc) => {
+      model.findOneAndUpdate({ _id: updatedData.id }, updatedData, (err, document) => {
         if (err) {
-          reject(err);
+          throw err;
+        }
+        if (!document) {
+          reject();
         } else {
-          resolve(doc);
+          resolve(document);
         }
       });
     });
@@ -47,15 +50,13 @@ export class Service{
 
   removeDocument<T>(id: string, model: mongoose.Model<any>): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      model.findOneAndRemove({ _id: id }).exec((err, item) => {
+      model.findOneAndRemove({ _id: id }).exec((err, document) => {
         if (err) {
           throw err;
         }
-        if (!item) {
-          console.log('utente non trovato');
+        if (!document) {
           reject(false);
         } else {
-          console.log('utente trovato');
           resolve(true);
         }
       });

@@ -10,7 +10,8 @@ export default function router(app: Application) {
 
   initdb((db: Promise<void>) => {
     useController(router, [ctrl.UserController]);
-    useController(router, [ctrl.SecurityController, ctrl.TokenController]);
+    // useController(router, [ctrl.SecurityController, ctrl.TokenController]);
+    useController(router, [ctrl.AuthenticationController]);
     useController(router, [ctrl.HeroController]);
   });
 

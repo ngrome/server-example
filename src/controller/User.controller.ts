@@ -2,7 +2,6 @@ import { Request as Req, Response as Res, NextFunction } from 'express';
 import { Req as Request, Res as Response, Next, Param, Body } from '../lib/decorators/parameters';
 import { checkEmail, checkPassword } from '../middleware/checkRequest';
 import { isAdmin, VerifyJWTToken } from '../middleware/JWT';
-import { MongoDocument } from '../models/Model';
 import { UserService } from '../service/user.service';
 import { User } from '../models/User';
 import { Controller } from '../lib/decorators/controller';

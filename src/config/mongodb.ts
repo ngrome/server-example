@@ -1,8 +1,6 @@
 import mongoose, { Mongoose } from 'mongoose';
 import { config } from './';
 
-
-
 export const initdb = (callback: (db:Promise<void>) => void) => {
   let dbURI: string;
 

@@ -6,7 +6,6 @@ import { apiError } from './controller/Errors.controller';
 import { config } from './config';
 import { User } from './models/User';
 
-// TODO: to be deep dive
 declare global {
   namespace Express {
     interface Request {

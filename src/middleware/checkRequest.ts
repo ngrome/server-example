@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Middleware } from '@decorators/express';
+import { Middleware } from '../lib/metaDati';
 
 export class checkEmail implements Middleware{
   public use = (

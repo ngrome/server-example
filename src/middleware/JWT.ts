@@ -65,6 +65,7 @@ export class GenerateToken implements Middleware{
     console.log('GENERATE TOKEN');
     req.user = req.user || {};
     const user = {
+      id: req.user.id,
       mail: req.user.mail,
       username: req.user.username,
       name: req.user.name,

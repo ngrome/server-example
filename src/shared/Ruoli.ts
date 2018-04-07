@@ -1,5 +1,5 @@
 export enum Ruoli {
-  ADMIN,
+  ADMIN = 0,
   MODERATOR,
   REGISTERED,
   GUEST,

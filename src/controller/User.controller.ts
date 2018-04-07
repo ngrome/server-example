@@ -5,13 +5,14 @@ import { isAdmin, VerifyJWTToken } from '../middleware/JWT';
 import { UserService } from '../service/user.service';
 import { User } from '../models/User';
 import { Controller } from '../lib/decorators/controller';
-import { Post, Get, Delete, Put } from '../lib/decorators/methods';
+import { Post, Get, Delete, Put, Providers } from '../lib/decorators/methods';
 
+@Providers([UserService])
 @Controller('/Users')
 export class UserController {
 
   constructor(private userService: UserService) {
-    this.userService = new UserService();
+    // this.userService = new UserService();
   }
 
   @Post('', [checkEmail, checkPassword])

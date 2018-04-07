@@ -1,23 +1,46 @@
 import { Request as Req, Response as Res, NextFunction } from 'express';
-import { Post, Get, Secured } from '../lib/decorators/methods';
+import { Post, Get, Secured, Providers, Delete, Put } from '../lib/decorators/methods';
 import { Controller } from '../lib/decorators/controller';
-import { Req as Request, Res as Response } from '../lib/decorators/parameters';
+import { Req as Request, Res as Response, Param, Body } from '../lib/decorators/parameters';
 import { Hero, addCustomField } from '../models/Hero';
 import { HeroService } from '../service/hero.service';
 import { Document } from 'mongoose';
 import { Ruoli } from '../shared/Ruoli';
 import { VerifyJWTToken } from '../middleware/JWT';
 
+@Providers([HeroService])
 @Controller('/heroes')
 export class HeroController {
 
-  constructor(private heroService: HeroService) {
-    this.heroService = new HeroService();
+  constructor(private heroService: HeroService, private name: string) {
     addCustomField();
   }
 
+  @Get('', [VerifyJWTToken])
+  @Secured([Ruoli.ADMIN])
+  async listHeroes(@Request() req: Req,@Response() res: Res) {
+    try {
+      const heroes: Hero[] | null =
+        await this.heroService.findDocument<Hero>();
+      res.status(200).json(heroes);
+    } catch (err) {
+      res.status(400).json({ success: false,  message:'Impossibile trovare eroi', errors: err });
+    }
+  }
+
+  @Get('/:id', [VerifyJWTToken])
+  async getoHero(@Request() req: Req,@Response() res: Res, @Param('id') id: string) {
+    try {
+      const hero: Hero | null =
+        await this.heroService.findDocumentById<Hero>(id);
+      res.status(200).json(hero);
+    } catch (err) {
+      res.status(400).json({ success: false,  message:'Impossibile trovare eroe', errors: err });
+    }
+  }
+
   @Post('/', [VerifyJWTToken])
-  @Secured([Ruoli.REGISTERED])
+  @Secured([Ruoli.ADMIN, Ruoli.GUEST, Ruoli.MODERATOR, Ruoli.REGISTERED])
   async createHero(@Request() req: Req, @Response() res: Res) {
 
     const heroData: Hero  = {
@@ -35,7 +58,33 @@ export class HeroController {
     }
   }
 
+  @Delete('/:id')
+  async deleteHero(@Request() req: Req, @Response() res:Res, @Param('id') id: string) {
+    try {
+      const op = await this.heroService.removeDocument<Hero>(id).then((result) => {
+        res.status(200).json({ success: true, message: 'Eroe cancellato' });
+      }).catch((err) => {
+        res.status(404).json({ success: false, message: 'Eroe non trovato' });
+      });
+    } catch (err) {
+      res.status(400).json({ success: false,  message:'Impossibile cancellare eroe', errors: err });
+    }
+  }
 
-
-
+  @Put('/:id')
+  async updateUser(@Request() req: Req, @Response() res:Res, @Param('id') id: string, @Body('user') hero: Hero) {
+    try {
+      const updateData = {
+        ...hero,
+        id};
+      const op = await this.heroService.updateDocument<Hero>(updateData).then((result) => {
+        res.status(200).json({ success: true, message: 'Eroe aggiornato' });
+      }).catch((err) => {
+        console.log(err);
+        res.status(404).json({ success: false, message: 'Eroe non trovato' });
+      });
+    } catch (err) {
+      res.status(400).json({ success: false,  message:'Impossibile aggiornare eroe', errors: err });
+    }
+  }
 }

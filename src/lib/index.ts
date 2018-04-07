@@ -17,6 +17,8 @@ function registerControllerRoutes(app: Application | Router, controllerToRegiste
   const routes = meta.routes;
   const url = meta.url;
   const params = meta.params;
+  const services = meta.toService;
+  (services || []).map((service:any) => controller[service.prop] = new service.class());
   /*
   Per ogni controller vado a prendermi il Metodo definiti nel meta.routes.
   Ad esempio SecurityController: login, definito nelle meta.routes che costruisco in fase di decorazione con il @Controller

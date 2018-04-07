@@ -15,6 +15,8 @@ export interface ExpressMeta {
   routes: {
     [key: string]: Route;
   };
+  providers: any[]; // Elenco dei servizi che effettuo con @Providers
+  toService: any[]; // Array di oggetti che mappa il parametro del costruttore con la classe del servizio e che istanzio dalla libreria
   params: {
     [key: string]: ParameterConfiguration[];
   };
@@ -33,6 +35,8 @@ export function getMeta(target: ExpressClass): ExpressMeta {
       url: '',
       middleware: [],
       routes: {},
+      providers: [],
+      toService: [],
       params: {} };
   } else {
     // console.log('META Express presenti:', target.__express_meta__);

@@ -1,6 +1,6 @@
 import { User } from '../models/User';
 import { Request as Req, Response as Res, NextFunction } from 'express';
-import { Post, Get } from '../lib/decorators/methods';
+import { Post, Get, Providers } from '../lib/decorators/methods';
 import { Controller } from '../lib/decorators/controller';
 import { Req as Request, Res as Response, Next } from '../lib/decorators/parameters';
 import { checkPassword, checkUsername, checkToken } from '../middleware/checkRequest';
@@ -9,11 +9,12 @@ import { config } from '../config';
 import { VerifyJWTToken, GetBodyToken, GenerateToken, SendToken } from '../middleware/JWT';
 import { UserService } from '../service/user.service';
 
+@Providers([UserService])
 @Controller('')
 export class AuthenticationController {
 
   constructor(private userService: UserService) {
-    this.userService = new UserService();
+    // this.userService = new UserService();
   }
 
   @Post('/login', [], [GenerateToken, SendToken])

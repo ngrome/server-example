@@ -83,6 +83,7 @@ export class SendToken implements Middleware{
     req.user = req.user || {};
     res.status(200).json({
       token: res.getHeader('Authorization'),
+      id: req.user.id,
       username: req.user.username,
       password: req.user.password,
       mail: req.user.mail,

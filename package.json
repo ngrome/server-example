@@ -52,7 +52,8 @@
     "express-validator": "^5.0.3",
     "jsonwebtoken": "^8.2.0",
     "moment": "^2.21.0",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "reflect-metadata": "^0.1.12"
   },
   "repository": {
     "type": "git",

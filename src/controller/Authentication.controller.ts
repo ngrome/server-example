@@ -71,6 +71,7 @@ export class AuthenticationController {
   @Post('/changePassword', [VerifyJWTToken])
   async changePassword(@Request() req: Req,@Response() res: Res) {
     try {
+      console.log('changePAssword');
       if (req.user.id) {
         const user = await this.userService.findDocumentById<User | null>(req.user.id);
         if (!user) throw 'Utente non trovato';

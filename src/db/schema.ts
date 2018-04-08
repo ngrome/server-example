@@ -32,6 +32,7 @@ export const dbCodeBattleSchema = {
 };
 
 dbCodeBattleSchema.schemaUser.pre('save', function (this: any, next) {
+  console.log('SAVE USER');
   if (!this.isModified('password')) return next();
   if (this.password) {
     bcrypt.hash(this.password, 10, (err, hash) => {
@@ -43,18 +44,11 @@ dbCodeBattleSchema.schemaUser.pre('save', function (this: any, next) {
   }
 });
 
-dbCodeBattleSchema.schemaUser.pre('update', function (this: any, next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
-  if (this.password) {
-    bcrypt.hash(this.password, 10, (err, hash) => {
-      this.password = hash;
-      next();
-    });
-  } else {
+dbCodeBattleSchema.schemaUser.pre('findOneAndUpdate', function (this: any, next) {
+  bcrypt.hash(this._update.password, 10, (err, hash) => {
+    this._update.password = hash;
     next();
-  }
+  });
 });
 
 interface Model extends Document{}

@@ -26,7 +26,8 @@ export class UserController {
       username: req.body.username,
       roles:  req.body.roles,
     };
-    const account: User = await this.userService.createDocument(data);
+    const account: User | null = await this.userService.createDocument(data)
+      .catch(err => null);
     if (account) {
       res.status(201).json({
         message:'Utente creato correttamente!',

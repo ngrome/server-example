@@ -7,7 +7,7 @@ import { Deprecated } from '../lib/decorators/methods';
 export class UserService extends Service {
 
   @Deprecated()
-  insert(user: User) : Promise<User> {
+  insert(user: User) : Promise<User | null> {
     const promise = new Promise<any>((resolve, reject) => {
       userModel.create(user, (err: any, saved: User) => {
         if (err) { reject(err); }
@@ -26,7 +26,7 @@ export class UserService extends Service {
     return super.findDocumentById<User>(idUser, userModel);
   }
 
-  createDocument<User>(newUser: User) : Promise<User> {
+  createDocument<User>(newUser: User) : Promise<User| null> {
     return super.createDocument<User>(newUser, userModel);
   }
 

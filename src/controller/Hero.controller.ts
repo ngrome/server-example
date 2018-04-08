@@ -17,11 +17,11 @@ export class HeroController {
   }
 
   @Get('', [VerifyJWTToken])
-  @Secured([Ruoli.ADMIN])
+  @Secured([Ruoli.ADMIN, Ruoli.MODERATOR, Ruoli.REGISTERED])
   async listHeroes(@Request() req: Req,@Response() res: Res) {
     try {
       const heroes: Hero[] | null =
-        await this.heroService.findDocument<Hero>();
+        await this.heroService.findDocument<Hero>({ user: req.user.id });
       res.status(200).json(heroes);
     } catch (err) {
       res.status(400).json({ success: false,  message:'Impossibile trovare eroi', errors: err });
@@ -47,6 +47,7 @@ export class HeroController {
       id: '',
       name: req.body.firstName,
       surname: req.body.surname,
+      user: req.user.id,
     };
     const hero = await this.heroService.insert(heroData);
     if (hero) {
@@ -72,11 +73,13 @@ export class HeroController {
   }
 
   @Put('/:id')
-  async updateUser(@Request() req: Req, @Response() res:Res, @Param('id') id: string, @Body('user') hero: Hero) {
+  async updateUser(@Request() req: Req, @Response() res:Res, @Param('id') id: string, @Body('hero') hero: Hero) {
     try {
       const updateData = {
         ...hero,
-        id};
+        id,
+      };
+      console.log('updateDataHero', updateData);
       const op = await this.heroService.updateDocument<Hero>(updateData).then((result) => {
         res.status(200).json({ success: true, message: 'Eroe aggiornato' });
       }).catch((err) => {

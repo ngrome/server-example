@@ -24,7 +24,7 @@ export class HeroService extends Service {
     return super.findDocumentById<Hero>(idUser, heroModel);
   }
 
-  createDocument<Hero>(newHero: Hero) : Promise<Hero> {
+  createDocument<Hero>(newHero: Hero) : Promise<Hero | null> {
     return super.createDocument<Hero>(newHero, heroModel);
   }
 

@@ -5,7 +5,7 @@ import { Middleware } from '../lib/metaDati';
 
 
 export class VerifyJWTToken implements Middleware{
-  public use(req: Req, res: Res,next: NextFunction): void {
+  public action(req: Req, res: Res,next: NextFunction): void {
     console.log('verify jwt');
 
     const token = req.headers.authorization;
@@ -25,7 +25,7 @@ export class VerifyJWTToken implements Middleware{
 }
 
 export class GetBodyToken implements Middleware{
-  public use(req: Req, res: Res,next: NextFunction): void {
+  public action(req: Req, res: Res,next: NextFunction): void {
     const token = req.body.token;
     if (typeof token === 'string') {
       const p = verifyJWT(extractFromBearer(token), res);
@@ -43,7 +43,7 @@ export class GetBodyToken implements Middleware{
 }
 
 export class isAdmin implements Middleware {
-  public use(req: Req, res: Res,next: NextFunction): void {
+  public action(req: Req, res: Res,next: NextFunction): void {
     if (typeof req.headers.authorization === 'string') {
       const p = verifyJWT(req.headers.authorization, res);
       p.then((decoded) => {
@@ -63,7 +63,7 @@ export class isAdmin implements Middleware {
 
 export class GenerateToken implements Middleware{
 
-  public use(req: Req, res: Res,next: NextFunction): void {
+  public action(req: Req, res: Res,next: NextFunction): void {
     console.log('GENERATE TOKEN');
     req.user = req.user || {};
     const user = {
@@ -81,7 +81,7 @@ export class GenerateToken implements Middleware{
 }
 
 export class SendToken implements Middleware{
-  public use(req: Req, res: Res,next: NextFunction): void {
+  public action(req: Req, res: Res,next: NextFunction): void {
     req.user = req.user || {};
     res.status(200).json({
       token: res.getHeader('Authorization'),

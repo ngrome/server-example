@@ -1,24 +1,27 @@
 import express, { Application, Router, RequestHandler, Request, Response } from 'express';
-import { Type, ExpressClass, ExpressMeta, getMeta, Route } from './metaDati';
+import { ClassType, ExpressClass, MetaDati, getMeta, Route } from './metaDati';
 import { extractParameters } from './decorators/parameters';
 import { authorizationHandler, middlewareHandler } from './handlers';
 import { NextFunction } from 'express-serve-static-core';
 
-export function useController(app: Application | Router, controllers: Type[]) {
-  controllers.map((controller: Type) => registerControllerRoutes(app, controller));
+export function useController(app: Application | Router, controllers: ClassType[]) {
+  controllers.map((controller: ClassType) => registerControllerRoutes(app, controller));
 }
 
-function registerControllerRoutes(app: Application | Router, controllerToRegister: Type) {
+function registerControllerRoutes(app: Application | Router, controllerToRegister: ClassType) {
   const controller: ExpressClass = getController(controllerToRegister);
-  const meta: ExpressMeta = getMeta(controller);
+  const meta: MetaDati = getMeta(controller);
   const router : Router & {
     [key: string]: any;
   } = express.Router();
   const routes = meta.routes;
   const url = meta.url;
   const params = meta.params;
-  const services = meta.toService;
-  (services || []).map((service:any) => controller[service.prop] = new service.class());
+  const services = meta.inject;
+  (services || []).map((service:any) => {
+    console.log('SERVICE TO INJECT:', controller, ' ', service);
+    controller[service.prop] = new service.class();
+  });
   /*
   Per ogni controller vado a prendermi il Metodo definiti nel meta.routes.
   Ad esempio SecurityController: login, definito nelle meta.routes che costruisco in fase di decorazione con il @Controller
@@ -89,7 +92,7 @@ function registerControllerRoutes(app: Application | Router, controllerToRegiste
   app.use(url, router);
 }
 
-function getController(Controller: Type): ExpressClass {
+function getController(Controller: ClassType): ExpressClass {
   // To-DO: Prendilo da un Container o istanzialo
   return new Controller();
 }

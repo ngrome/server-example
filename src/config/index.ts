@@ -4,7 +4,7 @@ export const config = {
     PORT: 3000,
     COOKIE_KEY: 'asdfsadfsadffsd',
     SECRET_JWT: 'dsfadfdsfasdfsadf',
-    EXPIRES_JWT: 50,
+    EXPIRES_JWT: 250,
     ENV: 'development',
   },
   mongodb: {

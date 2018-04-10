@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Middleware } from '../lib/metaDati';
 
 export class checkEmail implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -11,7 +11,7 @@ export class checkEmail implements Middleware{
 }
 
 export class checkUsername implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -20,7 +20,7 @@ export class checkUsername implements Middleware{
 }
 
 export class checkPassword implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -29,7 +29,7 @@ export class checkPassword implements Middleware{
 }
 
 export class checkToken implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -38,7 +38,7 @@ export class checkToken implements Middleware{
 }
 
 export class checkTitle implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -47,7 +47,7 @@ export class checkTitle implements Middleware{
 }
 
 export class checkFilmMaker implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -56,7 +56,7 @@ export class checkFilmMaker implements Middleware{
 }
 
 export class checkName implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(
@@ -65,7 +65,7 @@ export class checkName implements Middleware{
 }
 
 export class checkSurname implements Middleware{
-  public use = (
+  public action = (
     request: Request,
     response: Response,
     next: NextFunction): void => next(check(

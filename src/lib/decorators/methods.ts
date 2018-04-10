@@ -1,11 +1,11 @@
-import { ExpressMeta, getMeta, Type } from '../metaDati';
+import { MetaDati, getMeta, ClassType } from '../metaDati';
 import { Ruoli } from '../../shared/Ruoli';
 import 'reflect-metadata';
 
 function methodDecoratorFactory(
-  method: string, url: string, middleware: Type[], endMiddleware: Type[]) : MethodDecorator {
+  method: string, url: string, middleware: ClassType[], endMiddleware: ClassType[]) : MethodDecorator {
   return (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-    const meta: ExpressMeta = getMeta(target);
+    const meta: MetaDati = getMeta(target);
     meta.routes[key] = { ...meta.routes[key],
       method,
       url,
@@ -15,25 +15,25 @@ function methodDecoratorFactory(
   };
 }
 
-export function Post(url: string, middleware?: Type[], endMiddleware?: Type[]) {
+export function Post(url: string, middleware?: ClassType[], endMiddleware?: ClassType[]) {
   return methodDecoratorFactory('post', url, middleware || [], endMiddleware || []);
 }
 
-export function Get(url: string, middleware?: Type[], endMiddleware?: Type[]) {
+export function Get(url: string, middleware?: ClassType[], endMiddleware?: ClassType[]) {
   return methodDecoratorFactory('get', url, middleware || [], endMiddleware || []);
 }
 
-export function Put(url: string, middleware?: Type[], endMiddleware?: Type[]) {
+export function Put(url: string, middleware?: ClassType[], endMiddleware?: ClassType[]) {
   return methodDecoratorFactory('put', url, middleware || [], endMiddleware || []);
 }
 
-export function Delete(url: string, middleware?: Type[], endMiddleware?: Type[]) {
+export function Delete(url: string, middleware?: ClassType[], endMiddleware?: ClassType[]) {
   return methodDecoratorFactory('delete', url, middleware || [], endMiddleware || []);
 }
 
 export function Secured(authorizedGroup: Ruoli[]): MethodDecorator {
   return (target: any, key, descriptor) => {
-    const meta: ExpressMeta = getMeta(target);
+    const meta: MetaDati = getMeta(target);
     meta.routes[key] = {
       ...meta.routes[key],
       authorizedGroup };
@@ -49,7 +49,7 @@ export function Deprecated(): MethodDecorator {
 }
 
 
-function decorateProviders(target: any, services: any[]) {
+export function decorateProviders(target: any, services: any[]) {
   return function <T extends { new(...args: any[]): {} }>(constructor: T) {
     console.log('Decoratore Providers Invocato');
     /* types conterrà le funzioni che ho passato al COSTRUTTORE */
@@ -69,12 +69,14 @@ function decorateProviders(target: any, services: any[]) {
       // Se il servizio del provider è un tipo dei parametri del costruttore...
 
       if (exist.length === 1) {
-        target.prototype.__express_meta__.toService = [
-          ...target.prototype.__express_meta__.toService,
+        target.prototype.meta.inject = [
+          ...target.prototype.meta.inject,
           {
             prop: args[index],
             class: exist[0],
           }];
+      } else {
+        throw new Error(` NullInjectorError: No provider for ${parameter.name}`);
       }
     });
   };

@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { Ruoli } from '../shared/Ruoli';
 
-export enum ParameterType {
+export enum TipiParametri {
   REQUEST = 1,
   RESPONSE,
   NEXT,
@@ -9,45 +9,45 @@ export enum ParameterType {
   BODY,
 }
 
-export interface ExpressMeta {
+export interface MetaDati {
   url: string;
-  middleware: Type[];
+  middleware: ClassType[];
   routes: {
     [key: string]: Route;
   };
   providers: any[]; // Elenco dei servizi che effettuo con @Providers
-  toService: any[]; // Array di oggetti che mappa il parametro del costruttore con la classe del servizio e che istanzio dalla libreria
+  inject: any[]; // Array di oggetti che mappa il parametro del costruttore con la classe del servizio e che istanzio dalla libreria
   params: {
     [key: string]: ParameterConfiguration[];
   };
   [index: string]: any;
 }
 
-export interface ExpressClass {
-  __express_meta__?: ExpressMeta;
+export interface ExpressClass extends ClassType{
+  meta?: MetaDati;
   [index: string]: any;
 }
 
-export function getMeta(target: ExpressClass): ExpressMeta {
-  if (!target.__express_meta__) {
+export function getMeta(target: ExpressClass): MetaDati {
+  if (!target.meta) {
     // Aggancio al target gli express meta:
-    target.__express_meta__ = {
+    target.meta = {
       url: '',
       middleware: [],
       routes: {},
       providers: [],
-      toService: [],
+      inject: [],
       params: {} };
   } else {
-    // console.log('META Express presenti:', target.__express_meta__);
+    // console.log('META Express presenti:', target.meta);
   }
 
-  return target.__express_meta__;
+  return target.meta;
 }
 
 export interface ParameterConfiguration {
   index: number;
-  type: ParameterType;
+  type: TipiParametri;
   name?: string;
   data?: any;
 }
@@ -56,15 +56,15 @@ export interface Route {
   method: string;
   url: string;
   authorizedGroup: Ruoli[];
-  middleware: Type[];
-  endMiddleware: Type[];
+  middleware: ClassType[];
+  endMiddleware: ClassType[];
   [key: string]: any;
 }
 
-export interface Type extends Function {
+export interface ClassType extends Function {
   new (...args: any[]): any;
 }
 
 export interface Middleware {
-  use(request: Request, response: Response, next: NextFunction): void;
+  action(request: Request, response: Response, next: NextFunction): void;
 }

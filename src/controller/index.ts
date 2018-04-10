@@ -1,10 +1,4 @@
-import { AuthenticationController } from './Authentication.controller';
-import { TokenController } from './Token.controller';
-import { UserController } from './User.controller';
-import { HeroController } from './Hero.controller';
-
-export {
-  AuthenticationController,
-  TokenController,
-  UserController,
-  HeroController};
+export { AuthenticationController } from './Authentication.controller';
+export { TokenController } from './Token.controller';
+export { UserController } from './User.controller';
+export { HeroController } from './Hero.controller';

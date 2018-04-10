@@ -8,7 +8,10 @@ import { Controller } from '../lib/decorators/controller';
 import { Post, Get, Delete, Put, Providers } from '../lib/decorators/methods';
 
 @Providers([UserService])
-@Controller('/Users')
+@Controller({
+  basePath:'/Users',
+  providers: [UserService],
+})
 export class UserController {
 
   constructor(private userService: UserService) {

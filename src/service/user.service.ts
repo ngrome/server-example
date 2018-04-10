@@ -5,6 +5,10 @@ import * as bcrypt from 'bcryptjs';
 import { Deprecated } from '../lib/decorators/methods';
 
 export class UserService extends Service {
+  constructor() {
+    super();
+    console.log('>>>NEW USER SERVICE<<<');
+  }
 
   @Deprecated()
   insert(user: User) : Promise<User | null> {

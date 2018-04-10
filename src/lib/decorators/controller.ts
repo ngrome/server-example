@@ -1,10 +1,20 @@
-import { ExpressMeta, getMeta, Type } from '../metaDati';
+import { MetaDati, getMeta, ClassType } from '../metaDati';
+import { decorateProviders } from './methods';
 
-export function Controller(basePath: string, middleware?: Type[]): ClassDecorator {
+interface IController {
+  basePath: string;
+  providers?: any[];
+}
+
+export function Controller(opt: string | IController, middleware?: ClassType[]): ClassDecorator {
   return function (target: any) {
-    const meta: ExpressMeta = getMeta(target.prototype);
-    meta.url = basePath;
+    const meta: MetaDati = getMeta(target.prototype);
+    meta.url = typeof opt === 'string' ? opt : opt.basePath;
     meta.middleware = middleware || [];
-    console.log('META', JSON.stringify(meta, null, 4));
+    if (typeof opt !== 'string' && opt.providers) {
+      meta.providers = opt.providers;
+      decorateProviders(target, opt.providers)(target);
+    }
+    // console.log('META CONTROLLER', JSON.stringify(meta, null, 4));
   };
 }

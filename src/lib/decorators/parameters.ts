@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { ParameterType, ExpressMeta, getMeta, ParameterConfiguration } from '../metaDati';
+import { TipiParametri, MetaDati, getMeta, ParameterConfiguration } from '../metaDati';
 
-export function paramDecoratorFactory(type: ParameterType) {
+export function paramDecoratorFactory(type: TipiParametri) {
   return function (name?: string): ParameterDecorator {
     return function (target: any, methodName: string | symbol, index: number) {
-      const meta: ExpressMeta = getMeta(target);
+      const meta: MetaDati = getMeta(target);
       /*
       Per ogni metodo mi costruisco la lista dei parametri: RES, REQ, NEXT, BODY, PARAMS...
       Questo mi serve per la apply/call che farò nell'handler del metodo che passo all'oggetto
@@ -18,15 +18,15 @@ export function paramDecoratorFactory(type: ParameterType) {
   };
 }
 
-export const Req = paramDecoratorFactory(ParameterType.REQUEST);
+export const Req = paramDecoratorFactory(TipiParametri.REQUEST);
 
-export const Res = paramDecoratorFactory(ParameterType.RESPONSE);
+export const Res = paramDecoratorFactory(TipiParametri.RESPONSE);
 
-export const Next = paramDecoratorFactory(ParameterType.NEXT);
+export const Next = paramDecoratorFactory(TipiParametri.NEXT);
 
-export const Param = paramDecoratorFactory(ParameterType.PARAMS);
+export const Param = paramDecoratorFactory(TipiParametri.PARAMS);
 
-export const Body = paramDecoratorFactory(ParameterType.BODY);
+export const Body = paramDecoratorFactory(TipiParametri.BODY);
 
 export function getParam(source: any, paramType: string | null, name: string | undefined): any {
   const param = paramType ? source[paramType] : source;
@@ -42,20 +42,20 @@ export function extractParameters(
   }
   for (const { name, index, type } of params) {
     switch (type) {
-      case ParameterType.RESPONSE:
+      case TipiParametri.RESPONSE:
         args[index] = res;
         break;
-      case ParameterType.REQUEST:
+      case TipiParametri.REQUEST:
         args[index] = req; // getParam(req, null , name);
         break;
-      case ParameterType.NEXT:
+      case TipiParametri.NEXT:
         args[index] = next;
         break;
-      case ParameterType.PARAMS:
+      case TipiParametri.PARAMS:
         /* Il name sarà il nome del parametro passato ad esempio id */
         args[index] = getParam(req, 'params', name);
         break;
-      case ParameterType.BODY:
+      case TipiParametri.BODY:
         args[index] = getParam(req, 'body', name);
         break;
     }

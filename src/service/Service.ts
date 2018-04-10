@@ -43,7 +43,6 @@ export class Service{
       if (!mongoose.Types.ObjectId.isValid(updatedData.id)) {
         throw 'Not valid id';
       }
-      console.log('AGG:', updatedData);
       model.findOneAndUpdate({ _id: updatedData.id }, updatedData, (err, document) => {
         if (err) {
           throw err;

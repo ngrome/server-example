@@ -12,7 +12,7 @@ import { VerifyJWTToken } from '../middleware/JWT';
 @Controller('/heroes')
 export class HeroController {
 
-  constructor(private heroService: HeroService, private name: string) {
+  constructor(private heroService: HeroService) {
     addCustomField();
   }
 

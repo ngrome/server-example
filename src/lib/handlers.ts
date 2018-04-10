@@ -1,12 +1,12 @@
-import { Type, Middleware } from './metaDati';
+import { ClassType, Middleware } from './metaDati';
 import { Request, NextFunction, Response } from 'express';
 import { Ruoli } from '../shared/Ruoli';
 
-export function middlewareHandler(middleware: Type) {
+export function middlewareHandler(middleware: ClassType) {
   return function (...args: any[]): any {
     const instance: Middleware = new middleware();
     console.log('INSTANCE Middleware:', instance);
-    return instance.use.apply(instance, args);
+    return instance.action.apply(instance, args);
   };
 }
 
